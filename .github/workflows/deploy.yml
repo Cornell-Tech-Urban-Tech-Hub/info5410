@@ -24,22 +24,13 @@ jobs:
           # Reading files are stored with Git LFS. Fetch them so the build
           # deploys real PDFs rather than LFS pointer files.
           lfs: true
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          # pnpm 10 requires Node >= 18.12. 22 is the LTS line used in CI.
-          node-version: 22
-          cache: 'pnpm'
       - name: Install, build, and upload your site
         uses: withastro/action@v3
         with:
           node-version: 22
-          # Pin pnpm. A floating pnpm@latest broke the reference site build.
-          package-manager: pnpm@10
+          # The package manager and its version come from the packageManager
+          # field in package.json. Do not add a version input here. The
+          # action rejects two competing pnpm versions.
 
   deploy:
     needs: build
