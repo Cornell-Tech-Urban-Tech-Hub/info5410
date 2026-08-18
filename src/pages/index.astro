@@ -1,0 +1,655 @@
+---
+/**
+ * Home page for INFO 5410: Urban Systems.
+ * The information layout mirrors the INFO 5420 course site (~/Repos/uds):
+ * intro, description with a collapsible deep-dive, projects, and team.
+ * The visual language follows wiki/. Content comes from the syllabus
+ * in raw/ and the collections in src/content/.
+ */
+import Default from '@layouts/Default.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import Card from '@components/ui/Card.astro';
+import DashedLink from '@components/ui/DashedLink.astro';
+import { getCollection } from 'astro:content';
+
+// The CDspec project phases, in syllabus order.
+const projects = (await getCollection('projects')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
+
+// The team, split by role. The role regexes mirror the INFO 5420 site.
+const teamMembers = (await getCollection('team')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
+
+const instructors = teamMembers.filter((member) =>
+  /instructor/i.test(member.data.role)
+);
+const teachingAssistants = teamMembers.filter((member) =>
+  /\bta\b|teaching assistant/i.test(member.data.role)
+);
+const guestMentorList = teamMembers
+  .filter((member) => /guest mentor/i.test(member.data.role))
+  .flatMap((member) => member.data.mentors ?? []);
+
+// The CDspec project document. Keep the link exactly as the syllabus gives it.
+const cdspecDocUrl =
+  'https://docs.google.com/document/d/10E83hX6BE9ylBXuQShdYAidjdZRj15uPTsgPY2oFHxk/edit?tab=t.0';
+
+// Grading components from the syllabus table.
+const gradeComponents = [
+  { component: 'Clarity', weight: '30%' },
+  { component: 'Originality', weight: '30%' },
+  { component: 'Relevance', weight: '20%' },
+  { component: 'References', weight: '10%' },
+  { component: 'Timeliness', weight: '10%' },
+];
+
+// Grade scale from the syllabus table.
+const gradeScale = [
+  { grade: 'A', range: '94 to 100' },
+  { grade: 'A-', range: '90 to 93' },
+  { grade: 'B+', range: '85 to 89' },
+  { grade: 'B', range: '80 to 84' },
+  { grade: 'F', range: 'below 80' },
+];
+
+// Course logistics from the syllabus header.
+const courseDetails = [
+  { label: 'Credits', value: '3' },
+  { label: 'Lectures', value: 'Monday and Wednesday, 11:40 a.m. to 12:55 p.m.' },
+  { label: 'Room', value: 'Bloomberg 161' },
+  { label: 'Office hours', value: 'By appointment' },
+  { label: 'Frequency', value: 'Offered every fall' },
+  { label: 'Prerequisites', value: 'None' },
+];
+---
+
+<Default
+  title='INFO 5410: Urban Systems, Cornell Tech'
+  description='Urban Systems explores cities as complex, interconnected networks where physical infrastructure, social dynamics, and technology converge. INFO 5410, Cornell Tech, Fall 2026.'
+>
+  <main class='mx-auto w-full max-w-6xl flex-1 px-6 pb-16'>
+    <!-- Section 1: intro. Course title and subtitle. -->
+    <section class='home-section intro-section max-w-3xl pt-12'>
+      <h1 class='text-4xl text-skin-base lg:text-5xl'>Urban Systems</h1>
+      <h2 class='intro-subtitle'>The City as a System of Systems</h2>
+    </section>
+
+    <!-- Section 2: description. Three paragraphs plus a collapsible
+         deep-dive into requirements, projects, outcomes, assessment,
+         and logistics. -->
+    <section class='home-section max-w-3xl'>
+      <div class='space-y-4'>
+        <p>
+          Urban Systems explores cities as complex, interconnected networks
+          where physical infrastructure, social dynamics, and technology
+          converge to shape modern urban life. This course examines the city
+          as a "system of systems," where the interaction between diverse
+          elements, from transportation networks to cultural institutions,
+          creates emergent patterns that define today's urban experiences and
+          challenges.
+        </p>
+        <p>
+          Students will develop a comprehensive understanding of both
+          <strong>hard systems</strong> (infrastructure, transportation,
+          water, energy, waste) and <strong>soft systems</strong> (social
+          networks, economic development, cultural production, governance)
+          that make cities function. Through a blend of theoretical
+          frameworks and hands-on analysis, students gain expertise in:
+        </p>
+        <ul class='expertise-list'>
+          <li><strong>Systems thinking</strong> applied to urban environments</li>
+          <li><strong>Data-driven urban analysis</strong> using current NYC datasets</li>
+          <li><strong>Mapping and modeling</strong> complex urban interactions</li>
+          <li>
+            <strong>Technology applications</strong> for urban challenges
+            (IoT, AI, data science)
+          </li>
+          <li>
+            <strong>Policy and planning</strong> implications of systems
+            approaches
+          </li>
+        </ul>
+        <p>
+          Assignments center on New York City, providing concrete examples of
+          urban systems in action. You'll work with actual city data from NYC
+          OpenData to analyze everything from subway flows to cultural
+          institution distributions. Guest lectures feature leading urban
+          practitioners from government and industry.
+        </p>
+      </div>
+
+      <details class='collapsible'>
+        <summary>
+          <span class='summary-label'>Course details</span>
+          <span class='summary-hint'>Click to open or close</span>
+        </summary>
+
+        <div class='collapsible-body'>
+          <section class='text-block'>
+            <h2>Course Requirements</h2>
+            <p>
+              The course emphasizes applied learning through practical
+              analysis and creative problem-solving that mirrors real-world
+              urban planning and technology work. Rather than traditional
+              exams, students demonstrate mastery through progressive
+              skill-building that culminates in professional-quality
+              deliverables suitable for portfolios.
+            </p>
+            <ul>
+              <li>
+                <strong>Weekly Readings:</strong> expect 2 to 3 hours of
+                reading per week from seminal urban theory texts and
+                contemporary research papers
+              </li>
+              <li>
+                <strong>Urban Systems Labs:</strong> student-led interactive
+                sessions for hands-on work with data and collaborative
+                discussions
+              </li>
+              <li>
+                <strong>Project Work:</strong> significant time investment in
+                mapping, analysis, and multimedia creation using tools like
+                ArcGIS StoryMaps
+              </li>
+            </ul>
+          </section>
+
+          <section class='text-block'>
+            <h2>Course Project: CDspec</h2>
+            <p>
+              The course project, CDspec, is contained entirely within the
+              <DashedLink href={cdspecDocUrl} external>
+                CDspec project document
+              </DashedLink>. Students should become accustomed to referring to
+              the project document throughout the semester.
+            </p>
+            <table class='info-table'>
+              <thead>
+                <tr>
+                  <th scope='col'>Activity</th>
+                  <th scope='col'>Due</th>
+                  <th scope='col'>Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Project 1: CDspec: Hard Systems</td>
+                  <td>September 20</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td>Project 2: CDspec: Soft Systems</td>
+                  <td>October 18</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td>
+                    Project 3: CDspec: Digital Twins and Inter-system
+                    Interactions, Final Presentation
+                  </td>
+                  <td>November 29</td>
+                  <td>40%</td>
+                </tr>
+                <tr>
+                  <td>Labs</td>
+                  <td>Ongoing</td>
+                  <td>15%</td>
+                </tr>
+                <tr>
+                  <td>Class participation, including attendance</td>
+                  <td>Ongoing</td>
+                  <td>5%</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class='table-note'>
+              All assignments and projects are submitted on Canvas.
+            </p>
+          </section>
+
+          <section class='text-block'>
+            <h2>Student Outcomes</h2>
+            <ol>
+              <li>
+                <strong>Systems Analysis and Representation:</strong>
+                demonstrate an ability to recognize, analyze, and represent
+                urban systems, and understand the relationship between
+                systems and their associated complexities
+              </li>
+              <li>
+                <strong>"System of Systems" Thinking:</strong> develop a
+                "system of systems" sensibility and the ability to address
+                complex urban problems, clearly communicate new concepts, and
+                identify where urban technologies may lead to new solutions
+              </li>
+              <li>
+                <strong>Urban Systems Modeling:</strong> demonstrate practical
+                knowledge of how to model urban systems to support effective
+                simulations of interventions
+              </li>
+              <li>
+                <strong>Optimization for Urban Systems:</strong> explain how
+                to best utilize technology to optimize urban systems, enhance
+                urban resiliency, and improve the quality of life for
+                residents
+              </li>
+            </ol>
+          </section>
+
+          <section class='text-block'>
+            <h2>Assessment</h2>
+            <p>Student achievement is assessed on five components:</p>
+            <table class='info-table'>
+              <thead>
+                <tr>
+                  <th scope='col'>Component</th>
+                  <th scope='col'>Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  gradeComponents.map((row) => (
+                    <tr>
+                      <td>{row.component}</td>
+                      <td>{row.weight}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+            <p>Grades are determined on the following scale:</p>
+            <table class='info-table'>
+              <thead>
+                <tr>
+                  <th scope='col'>Grade</th>
+                  <th scope='col'>Percent</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  gradeScale.map((row) => (
+                    <tr>
+                      <td>{row.grade}</td>
+                      <td>{row.range}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </section>
+
+          <section class='text-block'>
+            <h2>Course Details</h2>
+            <table class='info-table'>
+              <tbody>
+                {
+                  courseDetails.map((row) => (
+                    <tr>
+                      <th scope='row'>{row.label}</th>
+                      <td>{row.value}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </details>
+    </section>
+
+    <!-- Section 3: projects. The CDspec phases, in card form. -->
+    <section class='home-section max-w-5xl'>
+      <SectionHeading id='projects-heading'>Projects</SectionHeading>
+      <p class='fold-copy'>
+        The semester-long CDspec project runs in three phases. Student work
+        will be showcased here as it ships.
+      </p>
+      <div class='project-grid'>
+        {
+          projects.map((project) => (
+            <Card class='project-card'>
+              <p class='project-meta'>
+                Due {project.data.due} · {project.data.weight}
+              </p>
+              <h3 class='project-title'>{project.data.title}</h3>
+              {project.data.description && (
+                <p class='project-description'>{project.data.description}</p>
+              )}
+              {project.data.url && (
+                <p class='project-link'>
+                  <DashedLink href={project.data.url} external>
+                    Project document
+                  </DashedLink>
+                </p>
+              )}
+            </Card>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Section 4: team. Instructors, teaching assistants, guest mentors. -->
+    <section class='home-section max-w-5xl'>
+      <SectionHeading id='team-heading'>Team</SectionHeading>
+      <p class='fold-copy'>Instructors and teaching team.</p>
+
+      <div class='team-hierarchy'>
+        <section class='team-group' aria-label='Instructors'>
+          {
+            instructors.length ? (
+              <div class='team-grid'>
+                {instructors.map((member) => (
+                  <Card class='team-card'>
+                    <h3 class='team-name'>{member.data.name}</h3>
+                    <p class='team-role'>
+                      {member.data.bio ? `${member.data.bio} · ` : ''}
+                      {member.data.role}
+                    </p>
+                    {member.data.email && (
+                      <p class='team-email'>
+                        <DashedLink href={`mailto:${member.data.email}`}>
+                          {member.data.email}
+                        </DashedLink>
+                      </p>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <p class='team-empty'>
+                Instructor information will be added soon.
+              </p>
+            )
+          }
+        </section>
+
+        <section class='team-group' aria-label='Teaching assistants'>
+          {
+            teachingAssistants.length ? (
+              <div class='team-grid'>
+                {teachingAssistants.map((member) => (
+                  <Card class='team-card'>
+                    <h3 class='team-name'>{member.data.name}</h3>
+                    <p class='team-role'>{member.data.role}</p>
+                    {member.data.email && (
+                      <p class='team-email'>
+                        <DashedLink href={`mailto:${member.data.email}`}>
+                          {member.data.email}
+                        </DashedLink>
+                      </p>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <p class='team-empty'>TA information will be added soon.</p>
+            )
+          }
+        </section>
+
+        <section class='team-group' aria-label='Guest mentors'>
+          {
+            guestMentorList.length ? (
+              <Card class='guest-mentor-card'>
+                <h3 class='team-name'>Guest Mentors</h3>
+                <ul class='guest-mentor-list'>
+                  {guestMentorList.map((mentor) => (
+                    <li>
+                      <strong>{mentor.name}</strong>
+                      <span class='mentor-sep'> | </span>
+                      {mentor.bio}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            ) : (
+              <p class='team-empty'>
+                Guest mentor information will be added soon.
+              </p>
+            )
+          }
+        </section>
+      </div>
+    </section>
+  </main>
+</Default>
+
+<style>
+  /* Space between the home sections. See wiki/layout.md. */
+  .home-section {
+    margin-top: 4rem;
+  }
+
+  /* Intro. The subtitle uses the display family at a lighter opacity. */
+  .intro-subtitle {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: rgb(var(--color-text-base));
+    opacity: 0.8;
+  }
+
+  /* Expertise list in the description. */
+  .expertise-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+
+  .expertise-list li {
+    margin-top: 0.25rem;
+  }
+
+  .expertise-list li::marker {
+    color: rgb(var(--color-accent));
+  }
+
+  /* Collapsible deep-dive. A Card-like shell around details/summary. */
+  .collapsible {
+    margin-top: 2rem;
+    border: 1px solid rgba(var(--color-border), 0.55);
+    transition: var(--theme-transition);
+  }
+
+  .collapsible summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 700;
+    list-style: none;
+    transition: var(--theme-transition);
+  }
+
+  .collapsible summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .collapsible summary:hover .summary-label {
+    color: rgb(var(--color-accent));
+  }
+
+  .summary-hint {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.6;
+  }
+
+  .collapsible[open] summary {
+    border-bottom: 1px solid rgba(var(--color-border), 0.55);
+  }
+
+  .collapsible-body {
+    padding: 0.5rem 1.5rem 1.5rem;
+  }
+
+  /* Text blocks inside the collapsible. */
+  .text-block {
+    margin-top: 1.75rem;
+  }
+
+  .text-block h2 {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .text-block p {
+    margin-top: 0.5rem;
+  }
+
+  .text-block ul,
+  .text-block ol {
+    margin-top: 0.75rem;
+    padding-left: 1.5rem;
+  }
+
+  .text-block ul {
+    list-style: disc;
+  }
+
+  .text-block ol {
+    list-style: decimal;
+  }
+
+  .text-block li {
+    margin-top: 0.375rem;
+  }
+
+  .text-block li::marker {
+    color: rgb(var(--color-accent));
+  }
+
+  /* Tables. Token borders, per wiki/components.md. */
+  .info-table {
+    width: 100%;
+    margin-top: 0.75rem;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .info-table th,
+  .info-table td {
+    border: 1px solid rgb(var(--color-border));
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .info-table th {
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+
+  .table-note {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    opacity: 0.75;
+  }
+
+  /* Fold sections (projects, team). */
+  .fold-copy {
+    margin-bottom: 1.5rem;
+    opacity: 0.8;
+  }
+
+  /* Project cards. */
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .project-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project-meta {
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+
+  .project-title {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  .project-description {
+    font-size: 0.875rem;
+    flex-grow: 1;
+  }
+
+  .project-link {
+    font-size: 0.875rem;
+  }
+
+  /* Team cards. */
+  .team-hierarchy {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .team-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .team-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .team-name {
+    font-size: 1.05rem;
+  }
+
+  .team-role {
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0.75;
+  }
+
+  .team-email {
+    font-size: 0.85rem;
+  }
+
+  .guest-mentor-card ul {
+    margin-top: 0.75rem;
+  }
+
+  .guest-mentor-card li {
+    margin-top: 0.375rem;
+    font-size: 0.9rem;
+  }
+
+  .mentor-sep {
+    opacity: 0.5;
+  }
+
+  .team-empty {
+    opacity: 0.7;
+    font-style: italic;
+  }
+</style>

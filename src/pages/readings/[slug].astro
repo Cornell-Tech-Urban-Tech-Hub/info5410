@@ -1,0 +1,144 @@
+---
+/**
+ * Reader page for one reading.
+ * It renders the reading's OCR-ed text store in the foliate-js reader.
+ * Only readings with a non-empty body get a reader page.
+ * See wiki/readings.md.
+ */
+import Default from '@layouts/Default.astro';
+import DashedLink from '@components/ui/DashedLink.astro';
+import Button from '@components/ui/Button.astro';
+import { withBase } from '@lib/base';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const readings = await getCollection('readings');
+  return readings
+    .filter((reading) => reading.body !== undefined && reading.body.trim().length > 0)
+    .map((reading) => ({
+      params: { slug: reading.id },
+      props: { reading },
+    }));
+}
+
+interface Props {
+  reading: CollectionEntry<'readings'>;
+}
+
+const { reading } = Astro.props;
+
+const { title, author, venue, year, week, note, url } = reading.data;
+const text = reading.body ?? '';
+
+// The JSON island carries the text to the client. Escape "<" so no
+// payload can close the script element early.
+const islandPayload = JSON.stringify({ title, text }).replace(/</g, '\\u003c');
+
+const metaParts = [author, venue, year ? String(year) : null].filter(Boolean);
+---
+
+<Default
+  title={`${title}, INFO 5410: Urban Systems`}
+  description={`On-site reader for ${title}. INFO 5410: Urban Systems, Cornell Tech.`}
+>
+  <main class='mx-auto w-full max-w-6xl flex-1 px-6 pb-16'>
+    <section class='reader-header max-w-3xl pt-12'>
+      <p class='back-link'>
+        <DashedLink href={withBase('readings/')}>All readings</DashedLink>
+      </p>
+      <h1 class='text-3xl text-skin-base'>{title}</h1>
+      {
+        metaParts.length > 0 && (
+          <p class='reader-meta'>
+            {metaParts.join(' · ')}
+            {week ? ` · Week ${week}` : ''}
+          </p>
+        )
+      }
+      {note && <p class='reader-note'>{note}</p>}
+      {
+        url && (
+          <p class='reader-source'>
+            Source:
+            <DashedLink href={url} external>{url}</DashedLink>
+          </p>
+        )
+      }
+    </section>
+
+    <section class='reader-shell mt-8' aria-label='E-text reader'>
+      <div class='reader-controls'>
+        <Button id='reader-prev' type='button'>Previous</Button>
+        <span id='reader-progress' class='reader-progress' aria-live='polite'>0%</span>
+        <Button id='reader-next' type='button'>Next</Button>
+      </div>
+      <div id='reader-root' class='reader-root' data-foliate-url={withBase('foliate-js/view.js')}></div>
+    </section>
+
+    <script is:inline type='application/json' id='reading-data' set:html={islandPayload} />
+    <script is:inline src={withBase('js/reader.js')} type='module'></script>
+  </main>
+</Default>
+
+<style>
+  .back-link {
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .reader-meta {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+
+  .reader-note {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .reader-source {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+  }
+
+  .reader-shell {
+    border: 1px solid rgba(var(--color-border), 0.55);
+    transition: var(--theme-transition);
+  }
+
+  .reader-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(var(--color-border), 0.55);
+  }
+
+  .reader-progress {
+    min-width: 3.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
+  }
+
+  .reader-root {
+    height: min(75svh, 900px);
+  }
+
+  .reader-root :global(foliate-view) {
+    display: block;
+    height: 100%;
+  }
+
+  /* Dark theme. The documented foliate-js pattern inverts the rendered
+     page through the filter part. */
+  :global(html[data-theme='dark']) .reader-root :global(foliate-view)::part(filter) {
+    filter: invert(1) hue-rotate(180deg);
+  }
+</style>

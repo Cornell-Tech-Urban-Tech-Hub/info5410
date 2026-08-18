@@ -1,0 +1,58 @@
+---
+/**
+ * Footer — the site footer.
+ * It carries the partner logo, the course term, and the site link.
+ * The information layout mirrors the INFO 5420 course site.
+ * The copyright styling follows wiki/components.md.
+ */
+import { Image } from 'astro:assets';
+import cornellTechLogo from '@assets/logos/cornell-tech.png';
+
+const year = new Date().getFullYear();
+const siteUrl = 'https://cornell-tech-urban-tech-hub.github.io/info5410/';
+---
+
+<footer class='mt-auto border-t border-skin-line bg-skin-fill'>
+  <div
+    class='mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-6 sm:px-6'
+  >
+    <Image
+      src={cornellTechLogo}
+      alt='Cornell Tech'
+      class='footer-logo'
+      loading='lazy'
+    />
+    <p class='footer-credit'>Fall 2026 · &copy; {year} Cornell Tech</p>
+    <a href={siteUrl} class='footer-link'>{siteUrl.replace('https://', '')}</a>
+  </div>
+</footer>
+
+<style>
+  .footer-logo {
+    height: 22px;
+    width: auto;
+    filter: invert(1);
+    transition: var(--theme-transition);
+  }
+
+  :global(html[data-theme='dark']) .footer-logo {
+    filter: none;
+  }
+
+  .footer-credit {
+    font-size: 0.9rem;
+    opacity: 0.75;
+  }
+
+  .footer-link {
+    font-size: 0.9rem;
+    color: rgb(var(--color-text-base));
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 0.2em;
+  }
+
+  .footer-link:hover {
+    color: rgb(var(--color-accent));
+  }
+</style>

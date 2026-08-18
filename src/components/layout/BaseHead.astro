@@ -1,0 +1,67 @@
+---
+/**
+ * BaseHead — the document head.
+ * It carries meta tags, the theme script, and the TypeKit font kit.
+ * Ported from the robotability reference and simplified.
+ */
+import { withBase } from '@lib/base';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<head>
+  <!-- The theme script runs before first paint. It sets data-theme. -->
+  <script is:inline src={withBase('toggle-theme.js')}></script>
+
+  <meta charset='utf-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <meta name='generator' content={Astro.generator} />
+  <meta name='theme-color' content='' />
+
+  <meta name='title' content={title} />
+  <meta name='description' content={description} />
+
+  <meta property='og:type' content='website' />
+  <meta property='og:url' content={canonicalURL} />
+  <meta property='og:title' content={title} />
+  <meta property='og:description' content={description} />
+
+  <link rel='canonical' href={canonicalURL} />
+  <link rel='icon' type='image/svg+xml' href={withBase('favicon.svg')} />
+
+  <title>{title}</title>
+
+  <!-- Fonts. The TypeKit kit krx4hav provides the parabolica families.
+       See wiki/typography.md. -->
+  <link rel='preconnect' href='https://use.typekit.net' crossorigin />
+  <link rel='stylesheet' href='https://use.typekit.net/krx4hav.css' />
+
+  <!-- Warn once if the kit does not load within 3 seconds.
+       The site then uses the fallback font stack. -->
+  <script is:inline>
+    (function () {
+      if (window.__info5410TypekitChecked) return;
+      window.__info5410TypekitChecked = true;
+      setTimeout(function () {
+        var found = false;
+        document.fonts.forEach(function (face) {
+          if (/parabolica/i.test(face.family)) found = true;
+        });
+        if (!found) {
+          console.warn(
+            'TypeKit kit krx4hav did not load within 3s. The site uses the fallback font stack.'
+          );
+        }
+      }, 3000);
+    })();
+  </script>
+
+  <slot />
+</head>

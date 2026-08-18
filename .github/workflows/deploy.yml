@@ -1,0 +1,53 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+        with:
+          # Reading files are stored with Git LFS. Fetch them so the build
+          # deploys real PDFs rather than LFS pointer files.
+          lfs: true
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          # pnpm 10 requires Node >= 18.12. 22 is the LTS line used in CI.
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        with:
+          node-version: 22
+          # Pin pnpm. A floating pnpm@latest broke the reference site build.
+          package-manager: pnpm@10
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

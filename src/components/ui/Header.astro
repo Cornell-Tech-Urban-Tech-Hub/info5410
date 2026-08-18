@@ -1,0 +1,121 @@
+---
+/**
+ * Header — the site header bar.
+ * It carries the wordmark, the site nav, the partner logo, and the
+ * course meta. The information layout mirrors the INFO 5420 course
+ * site, extended with nav links as the site grows.
+ * The visual language follows wiki/layout.md (compact nav variant).
+ */
+import { Image } from 'astro:assets';
+import cornellTechLogo from '@assets/logos/cornell-tech.png';
+import { baseUrl, withBase } from '@lib/base';
+
+const currentPath = Astro.url.pathname;
+
+const navItems = [{ name: 'Readings', url: withBase('readings/') }];
+
+const isActive = (url: string) => {
+  const path = new URL(url, 'http://localhost').pathname;
+  return currentPath === path || currentPath.startsWith(path);
+};
+---
+
+<header class='border-b border-skin-line bg-skin-fill'>
+  <div
+    class='mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 sm:px-6'
+  >
+    <div class='flex flex-wrap items-center gap-x-2 gap-y-2'>
+      <a href={baseUrl} class='header-wordmark'>Urban Systems</a>
+      <nav aria-label='Site'>
+        <ul class='header-nav'>
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  href={item.url}
+                  class:list={[
+                    'header-nav-link',
+                    { 'header-nav-link--active': isActive(item.url) },
+                  ]}
+                  aria-current={isActive(item.url) ? 'page' : undefined}
+                >
+                  {item.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+    <div class='flex items-center gap-4'>
+      <Image
+        src={cornellTechLogo}
+        alt='Cornell Tech'
+        class='partner-logo'
+        loading='lazy'
+      />
+      <span class='header-meta'>INFO 5410 · Cornell Tech</span>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header-wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.01em;
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    transition: var(--theme-transition);
+  }
+
+  .header-wordmark:hover {
+    color: rgb(var(--color-accent));
+  }
+
+  .header-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .header-nav-link {
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: rgb(var(--color-text-base));
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    transition: var(--theme-transition);
+  }
+
+  .header-nav-link:hover {
+    color: rgb(var(--color-accent));
+  }
+
+  .header-nav-link--active {
+    font-weight: 700;
+  }
+
+  .header-meta {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: rgb(var(--color-text-base));
+    opacity: 0.75;
+  }
+
+  /* The logo asset is the white reversed variant.
+     In the light theme it is inverted to dark ink.
+     In the dark theme it stays white. */
+  .partner-logo {
+    height: 26px;
+    width: auto;
+    filter: invert(1);
+    transition: var(--theme-transition);
+  }
+
+  :global(html[data-theme='dark']) .partner-logo {
+    filter: none;
+  }
+</style>
