@@ -1,10 +1,9 @@
 ---
 /**
  * Header — the site header bar.
- * It carries the wordmark, the site nav, the partner logo, and the
- * course meta. The information layout mirrors the INFO 5420 course
- * site, extended with nav links as the site grows.
- * The visual language follows wiki/layout.md (compact nav variant).
+ * The wordmark sits on the left. The right side runs nav links first,
+ * then the course meta, then the partner logo. That order follows the
+ * compact nav variant in wiki/layout.md: wordmark left, link list right.
  */
 import { Image } from 'astro:assets';
 import cornellTechLogo from '@assets/logos/cornell-tech.png';
@@ -24,9 +23,11 @@ const isActive = (url: string) => {
   <div
     class='mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 sm:px-6'
   >
-    <div class='flex flex-wrap items-center gap-x-2 gap-y-2'>
-      <a href={baseUrl} class='header-wordmark'>Urban Systems</a>
-      <nav aria-label='Site'>
+    <a href={baseUrl} class='header-wordmark'>Urban Systems</a>
+    <div class='flex flex-wrap items-center gap-x-4 gap-y-2'>
+      <!-- -mr-2 cancels the nav link's own padding so every gap in
+           this group reads as the same 1rem. -->
+      <nav aria-label='Site' class='-mr-2'>
         <ul class='header-nav'>
           {
             navItems.map((item) => (
@@ -46,15 +47,13 @@ const isActive = (url: string) => {
           }
         </ul>
       </nav>
-    </div>
-    <div class='flex items-center gap-4'>
+      <span class='header-meta'>INFO 5410 · Cornell Tech</span>
       <Image
         src={cornellTechLogo}
         alt='Cornell Tech'
         class='partner-logo'
         loading='lazy'
       />
-      <span class='header-meta'>INFO 5410 · Cornell Tech</span>
     </div>
   </div>
 </header>
