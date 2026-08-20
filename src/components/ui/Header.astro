@@ -1,9 +1,13 @@
 ---
 /**
  * Header — the site header bar.
- * The wordmark sits on the left. The right side runs nav links first,
- * then the course meta, then the partner logo. That order follows the
- * compact nav variant in wiki/layout.md: wordmark left, link list right.
+ * Three zones: the wordmark on the left, the nav links centered, then the
+ * course meta and partner logo on the right. `justify-between` splits the
+ * leftover space equally on either side of the nav, so it reads as evenly
+ * spaced between the wordmark and the meta — the perceptual centre. The
+ * geometric centre of the bar would sit noticeably right of that, because
+ * the meta-and-logo zone is far wider than the wordmark.
+ * Below `sm` the nav drops to its own full-width row underneath.
  */
 import { Image } from 'astro:assets';
 import cornellTechLogo from '@assets/logos/cornell-tech.png';
@@ -24,29 +28,33 @@ const isActive = (url: string) => {
     class='mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-4 gap-y-3 px-4 py-4 sm:px-6'
   >
     <a href={baseUrl} class='header-wordmark'>Urban Systems</a>
-    <div class='flex flex-wrap items-center gap-x-4 gap-y-2'>
-      <!-- -mr-2 cancels the nav link's own padding so every gap in
-           this group reads as the same 1rem. -->
-      <nav aria-label='Site' class='-mr-2'>
-        <ul class='header-nav'>
-          {
-            navItems.map((item) => (
-              <li>
-                <a
-                  href={item.url}
-                  class:list={[
-                    'header-nav-link',
-                    { 'header-nav-link--active': isActive(item.url) },
-                  ]}
-                  aria-current={isActive(item.url) ? 'page' : undefined}
-                >
-                  {item.name}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+    <!-- -ml-2 cancels the nav link's own padding so the mobile row lines up
+         with the wordmark; centred at sm and up, the padding is symmetric
+         and needs no correction. -->
+    <nav
+      aria-label='Site'
+      class='order-last -ml-2 w-full sm:order-none sm:ml-0 sm:w-auto'
+    >
+      <ul class='header-nav sm:justify-center'>
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                class:list={[
+                  'header-nav-link',
+                  { 'header-nav-link--active': isActive(item.url) },
+                ]}
+                aria-current={isActive(item.url) ? 'page' : undefined}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class='flex flex-wrap items-center justify-end gap-x-4 gap-y-2'>
       <span class='header-meta'>INFO 5410 · Cornell Tech</span>
       <Image
         src={cornellTechLogo}
@@ -88,7 +96,8 @@ const isActive = (url: string) => {
     transition: var(--theme-transition);
   }
 
-  .header-nav-link:hover {
+  .header-nav-link:hover,
+  .header-nav-link:focus-visible {
     color: rgb(var(--color-accent));
   }
 

@@ -10,6 +10,8 @@ import Default from '@layouts/Default.astro';
 import SectionHeading from '@components/ui/SectionHeading.astro';
 import Card from '@components/ui/Card.astro';
 import DashedLink from '@components/ui/DashedLink.astro';
+import CDspecMap from '@components/ui/CDspecMap.astro';
+import { withBase } from '@lib/base';
 import { getCollection } from 'astro:content';
 
 // The CDspec project phases, in syllabus order.
@@ -303,8 +305,7 @@ const courseDetails = [
     <section class='home-section max-w-5xl'>
       <SectionHeading id='projects-heading'>Projects</SectionHeading>
       <p class='fold-copy'>
-        The semester-long CDspec project runs in three phases. Student work
-        will be showcased here as it ships.
+        The semester-long CDspec project runs in three phases. Students work in pairs and analyze the same NYC community district throughout.
       </p>
       <div class='project-grid'>
         {
@@ -328,12 +329,13 @@ const courseDetails = [
           ))
         }
       </div>
+
+      <CDspecMap label="Last year's student projects" id='cdspec-map' />
     </section>
 
     <!-- Section 4: team. Instructors, teaching assistants, guest mentors. -->
     <section class='home-section max-w-5xl'>
       <SectionHeading id='team-heading'>Team</SectionHeading>
-      <p class='fold-copy'>Instructors and teaching team.</p>
 
       <div class='team-hierarchy'>
         <section class='team-group' aria-label='Instructors'>
@@ -412,6 +414,21 @@ const courseDetails = [
           }
         </section>
       </div>
+    </section>
+
+    <!-- Section 5: recommended reading. A pointer to the optional
+         background bibliography. -->
+    <section class='home-section max-w-3xl'>
+      <SectionHeading id='recommended-heading'>
+        Additional Reading
+      </SectionHeading>
+      <p class='fold-copy'>
+        A list of optional background titles on cities, urban form, and
+        urban technology sits on the
+        <DashedLink href={withBase('recommended-readings/')}>
+          recommended reading page
+        </DashedLink>.
+      </p>
     </section>
   </main>
 </Default>

@@ -1,0 +1,99 @@
+---
+/**
+ * Recommended reading. The optional background bibliography, listed
+ * alphabetically by author. These titles are not assigned work; the
+ * assigned readings live at /readings/. See wiki/readings.md.
+ */
+import Default from '@layouts/Default.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import DashedLink from '@components/ui/DashedLink.astro';
+import { withBase } from '@lib/base';
+import { getCollection } from 'astro:content';
+
+const recommended = (await getCollection('recommendedReadings')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
+---
+
+<Default
+  title='Recommended Reading, INFO 5410: Urban Systems, Cornell Tech'
+  description='Recommended background reading for INFO 5410: Urban Systems, Cornell Tech, Fall 2026.'
+>
+  <main class='mx-auto w-full max-w-6xl flex-1 px-6 pb-16'>
+    <section class='home-section max-w-3xl pt-12'>
+      <SectionHeading id='recommended-heading'>
+        Recommended Reading
+      </SectionHeading>
+      <p class='page-copy'>
+        Background titles on cities, urban form, and urban technology. None
+        of these are assigned. The assigned readings, by syllabus week, are
+        on the <DashedLink href={withBase('readings/')}>readings page</DashedLink>.
+      </p>
+
+      <ul class='reading-list'>
+        {
+          recommended.map((entry) => (
+            <li class='reading-entry'>
+              <p class='reading-title'>
+                {entry.data.url ? (
+                  <DashedLink href={entry.data.url} external>
+                    {entry.data.title}
+                  </DashedLink>
+                ) : (
+                  entry.data.title
+                )}
+              </p>
+              <p class='reading-meta'>
+                {[
+                  entry.data.author,
+                  entry.data.publisher,
+                  entry.data.place,
+                  entry.data.year ? String(entry.data.year) : null,
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</Default>
+
+<style>
+  .home-section {
+    margin-top: 4rem;
+  }
+
+  .page-copy {
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .reading-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .reading-entry {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(var(--color-border), 0.55);
+  }
+
+  .reading-entry:first-child {
+    padding-top: 0;
+  }
+
+  .reading-title {
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .reading-meta {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+</style>

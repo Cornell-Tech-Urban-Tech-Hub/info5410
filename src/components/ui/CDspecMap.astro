@@ -1,0 +1,113 @@
+---
+/**
+ * CDspecMap — the CDspec community-district map, embedded from the
+ * CDspec site's chrome-free /embed route.
+ *
+ * The map is a deck.gl and maplibre application with several megabytes
+ * of geometry behind it. It stays in an iframe so this site keeps its
+ * static, framework-free build, and so the map here is always whatever
+ * CDspec is currently serving. See wiki/cdspec-map.md.
+ */
+interface Props {
+  /** Heading text above the frame. */
+  label: string;
+  /** Optional id for the wrapper. */
+  id?: string;
+}
+
+const { label, id } = Astro.props;
+
+// The CDspec site's embed route. It renders the map alone, with no site
+// header or footer. Owned by the same group; see the CDspec repo.
+const embedUrl = 'https://cdspec.tech.cornell.edu/embed/';
+const siteUrl = 'https://cdspec.tech.cornell.edu/';
+---
+
+<figure {id} class='cdspec-map'>
+  <figcaption class='cdspec-map-head'>
+    <h3 class='cdspec-map-label'>{label}</h3>
+    <p class='cdspec-map-copy'>
+      Students in the Fall 2025 course each adopted a New York City
+      community district and analyzed its hard and soft systems. Districts
+      in orange carry a finished StoryMap. Select one and double click to open it.
+    </p>
+  </figcaption>
+
+  <div class='cdspec-map-frame'>
+    <!-- allow-popups lets a district open its StoryMap in a new tab;
+         allow-same-origin lets the map fetch its own geometry. -->
+    <iframe
+      src={embedUrl}
+      title='CDspec: NYC community districts mapped by Fall 2025 students'
+      loading='lazy'
+      referrerpolicy='no-referrer-when-downgrade'
+      sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox'
+    ></iframe>
+  </div>
+
+  <p class='cdspec-map-source'>
+    Map from <a href={siteUrl} target='_blank' rel='noopener noreferrer'>
+      cdspec.tech.cornell.edu
+    </a>. If it does not load, open it there directly.
+  </p>
+</figure>
+
+<style>
+  .cdspec-map {
+    margin: 2rem 0 0;
+  }
+
+  .cdspec-map-head {
+    margin-bottom: 1rem;
+  }
+
+  .cdspec-map-label {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  .cdspec-map-copy {
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+    opacity: 0.8;
+  }
+
+  /* The frame carries the Card border so the third-party panel reads as
+     part of the page. Its own ground is light, so it keeps a fixed
+     background rather than following the theme. */
+  .cdspec-map-frame {
+    border: 1px solid rgba(var(--color-border), 0.55);
+    background: #e2ddd6;
+    transition: var(--theme-transition);
+  }
+
+  .cdspec-map-frame iframe {
+    display: block;
+    width: 100%;
+    height: 34rem;
+    border: 0;
+  }
+
+  @media (max-width: 640px) {
+    .cdspec-map-frame iframe {
+      height: 26rem;
+    }
+  }
+
+  .cdspec-map-source {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  .cdspec-map-source a {
+    color: rgb(var(--color-text-base));
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+    text-underline-offset: 0.2em;
+  }
+
+  .cdspec-map-source a:hover {
+    color: rgb(var(--color-accent));
+  }
+</style>

@@ -1,0 +1,152 @@
+# Recommended reading for INFO 5410. Optional background titles, not
+# assigned work. The assigned readings live in src/content/readings/.
+# Entries are supplied by the instructors; publisher names are recorded
+# as given. See wiki/readings.md.
+
+- id: ascher-the-works
+  order: 1
+  author: 'Ascher, Kate'
+  title: 'The Works: Anatomy of a City'
+  publisher: 'Penguin Books'
+  place: 'New York'
+  year: 2007
+
+- id: batty-new-science-of-cities
+  order: 2
+  author: 'Batty, Michael'
+  title: 'The New Science of Cities'
+  publisher: 'The MIT Press'
+  place: 'Cambridge'
+  year: 2013
+
+- id: batty-inventing-future-cities
+  order: 3
+  author: 'Batty, Michael'
+  title: 'Inventing Future Cities'
+  publisher: 'The MIT Press'
+  place: 'Cambridge'
+  year: 2018
+
+- id: currid-warhol-economy
+  order: 4
+  author: 'Currid, Elizabeth'
+  title: 'The Warhol Economy: How Fashion, Art and Music Drive New York City'
+  publisher: 'Princeton University Press'
+  place: 'Princeton'
+  year: 2007
+
+- id: dyja-new-york-new-york-new-york
+  order: 5
+  author: 'Dyja, Thomas'
+  title: 'New York New York New York: Four Decades of Success, Excess and Transformation'
+  publisher: 'Simon & Schuster'
+  place: 'New York'
+  year: 2021
+
+- id: fisher-leite-hudson-yards-cost
+  order: 6
+  author: 'Fisher, B. and Leite, F.'
+  title: "The Cost of New York City's Hudson Yards Redevelopment Project"
+  publisher: 'The New School'
+  year: 2018
+
+- id: florida-rise-of-the-creative-class
+  order: 7
+  author: 'Florida, Richard'
+  title: 'The Rise of the Creative Class'
+  publisher: 'Basic Books'
+  place: 'New York'
+  year: 2014
+
+- id: glaeser-triumph-of-the-city
+  order: 8
+  author: 'Glaeser, Edward'
+  title: 'Triumph of the City: How Our Greatest Invention Makes Us Richer, Smarter, Greener, Healthier and Happier'
+  publisher: 'The Penguin Press'
+  place: 'New York'
+  year: 2011
+
+- id: group-of-35-preparing-for-the-future
+  order: 9
+  author: 'Group of 35'
+  title: 'Preparing for the Future: A Commercial Development Strategy for New York City'
+  year: 2001
+
+- id: hirt-zoned-in-the-usa
+  order: 10
+  author: 'Hirt, Sonia A.'
+  title: 'Zoned in the USA: The Origins and Implications of American Land Use Regulation'
+  publisher: 'Cornell University Press'
+  place: 'Ithaca'
+  year: 2014
+
+- id: kane-cool-deals-of-2010
+  order: 11
+  author: 'Kane, Meredith'
+  title: "Cool Deals of 2010: Sale and Development of the MTA's West Side Railyards"
+  publisher: 'American College of Real Estate Lawyers'
+  year: 2010
+
+- id: kostoff-the-city-assembled
+  order: 12
+  author: 'Kostoff, Spiro'
+  title: 'The City Assembled: The Elements of Urban Form Through History'
+  publisher: 'Thames and London'
+  place: 'London'
+  year: 1994
+
+- id: krieger-city-on-a-hill
+  order: 13
+  author: 'Krieger, Alex'
+  title: 'City on a Hill: Urban Idealism in America from the Puritans to the Present'
+  publisher: 'The Belknap Press of Harvard University Press'
+  place: 'Cambridge'
+  year: 2019
+
+- id: lynch-image-of-the-city
+  order: 14
+  author: 'Lynch, Kevin'
+  title: 'The Image of the City'
+  publisher: 'The MIT Press'
+  place: 'Cambridge'
+  year: 1960
+
+- id: rose-well-tempered-city
+  order: 15
+  author: 'Rose, Jonathan'
+  title: 'The Well-Tempered City: What Modern Science, Ancient Civilizations, and Human Nature Teach Us About the Future of Urban Life'
+  publisher: 'Harper Collins'
+  place: 'New York'
+  year: 2011
+
+- id: rothstein-color-of-law
+  order: 16
+  author: 'Rothstein, Richard'
+  title: 'The Color of Law: A Forgotten History of How Our Government Segregated America'
+  publisher: 'Liverwright'
+  place: 'New York'
+  year: 2017
+
+- id: rybczynski-city-life
+  order: 17
+  author: 'Rybczynski, Witold'
+  title: 'City Life: Urban Expectations in a New World'
+  publisher: 'Scribner'
+  place: 'New York'
+  year: 1995
+
+- id: rykwert-seduction-of-place
+  order: 18
+  author: 'Rykwert, Joseph'
+  title: 'The Seduction of Place: The City in the 21st Century'
+  publisher: 'Weidenfeld & Nicolson'
+  place: 'London'
+  year: 2000
+
+- id: townsend-smart-cities
+  order: 19
+  author: 'Townsend, Anthony'
+  title: 'Smart Cities: Big Data, Civic Hackers, and the Quest for a New Utopia'
+  publisher: 'W.W. Norton Company'
+  place: 'New York'
+  year: 2014
