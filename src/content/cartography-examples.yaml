@@ -1,0 +1,40 @@
+# Well-designed cartography examples for INFO 5410. Places that reliably
+# publish maps worth studying for their design, not their subject matter.
+# Entries are supplied by the instructors. Use only links that exist.
+# See wiki/cartography-examples.md.
+
+- id: mit-senseable-city-lab
+  order: 1
+  name: 'MIT Senseable City Lab'
+  org: 'Massachusetts Institute of Technology'
+  url: 'https://senseable.mit.edu/'
+
+- id: nyt-graphics-desk
+  order: 2
+  name: 'The New York Times graphics desk'
+  org: 'The New York Times'
+  url: 'https://www.nytimes.com/spotlight/graphics'
+
+- id: cartoblography-favourite-maps-2023
+  order: 3
+  name: 'Favourite maps of 2023'
+  org: 'Cartoblography, Kenneth Field'
+  url: 'https://cartoblography.com/2024/01/02/favourite-maps-of-2023/'
+
+- id: cartonerd-cacophony-of-cartography
+  order: 4
+  name: 'A cacophony of cartography'
+  org: 'Cartonerd, Kenneth Field'
+  url: 'https://cartonerd.blogspot.com/2014/03/a-cacophony-of-cartography.html'
+
+- id: david-rumsey-map-collection
+  order: 5
+  name: 'David Rumsey Historical Map Collection'
+  org: 'Cartography Associates, and Stanford University Libraries'
+  url: 'https://www.davidrumsey.com/'
+
+- id: gis-stack-exchange-beautiful-maps
+  order: 6
+  name: 'Seeking examples of beautiful maps?'
+  org: 'GIS Stack Exchange'
+  url: 'https://gis.stackexchange.com/questions/3083/seeking-examples-of-beautiful-maps'

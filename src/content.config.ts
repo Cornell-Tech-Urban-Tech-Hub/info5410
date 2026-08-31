@@ -6,6 +6,8 @@
  * the optional OCR-ed store of the original text. See wiki/readings.md.
  * The recommendedReadings collection carries the optional background
  * bibliography, held in one data file rather than one file per entry.
+ * The cartographyExamples collection carries the sources of well-designed
+ * maps, held the same way.
  * Pages map over these collections. They do not hardcode lists.
  */
 import { defineCollection } from 'astro:content';
@@ -92,4 +94,29 @@ const recommendedReadings = defineCollection({
   }),
 });
 
-export const collections = { team, projects, readings, recommendedReadings };
+/**
+ * Cartography examples: places that publish well-designed maps, offered as
+ * models for student work. Like recommendedReadings, these are short
+ * entries with no body, so they live in a single YAML file.
+ */
+const cartographyExamples = defineCollection({
+  loader: file('src/content/cartography-examples.yaml'),
+  schema: z.object({
+    /** Name of the source: a lab, desk, or archive, or the title of a
+     * single post or thread where that is what the entry points to. */
+    name: z.string(),
+    /** Institution, publisher, blog, or author behind the source. */
+    org: z.string().optional(),
+    /** Link to the source. Required here: an entry is the link. */
+    url: z.string().url(),
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = {
+  team,
+  projects,
+  readings,
+  recommendedReadings,
+  cartographyExamples,
+};

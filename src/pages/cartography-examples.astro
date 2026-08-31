@@ -1,0 +1,100 @@
+---
+/**
+ * Well-designed cartography examples. A short list of places that reliably
+ * publish maps worth studying before you make your own. Entries come from
+ * the cartographyExamples collection. See wiki/cartography-examples.md.
+ */
+import Default from '@layouts/Default.astro';
+import SectionHeading from '@components/ui/SectionHeading.astro';
+import DashedLink from '@components/ui/DashedLink.astro';
+import { withBase } from '@lib/base';
+import { getCollection } from 'astro:content';
+
+const examples = (await getCollection('cartographyExamples')).sort(
+  (a, b) => (a.data.order ?? 0) - (b.data.order ?? 0)
+);
+---
+
+<Default
+  title='Well-Designed Cartography Examples, INFO 5410: Urban Systems, Cornell Tech'
+  description='Places that publish well-designed maps, collected as models for CDspec work. INFO 5410, Cornell Tech, Fall 2026.'
+>
+  <main class='mx-auto w-full max-w-6xl flex-1 px-6 pb-16'>
+    <section class='page-section max-w-3xl pt-12'>
+      <SectionHeading id='cartography-heading'>
+        Well-Designed Cartography Examples
+      </SectionHeading>
+      <p class='page-copy'>
+        As part of the CDSpec project, you should be curating your own taste for data visualization and cartography, and explicitly identifying your influences on your StoryMap. Each of these sources present
+        cartography worth studying: what it chooses to show,
+        what it leaves out, how it labels, and how it uses color. Use them as
+        references for the maps in your CDspec work.
+      </p>
+
+      <ul class='example-list'>
+        {
+          examples.map((entry) => (
+            <li class='example-entry'>
+              <p class='example-name'>
+                <DashedLink href={entry.data.url} external>
+                  {entry.data.name}
+                </DashedLink>
+              </p>
+              {entry.data.org && (
+                <p class='example-meta'>{entry.data.org}</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class='page-note'>
+        The list grows through the semester. Send the instructors a source
+        you think belongs here.
+      </p>
+    </section>
+  </main>
+</Default>
+
+<style>
+  .page-section {
+    margin-top: 4rem;
+  }
+
+  .page-copy {
+    margin-bottom: 2rem;
+    opacity: 0.8;
+  }
+
+  .example-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .example-entry {
+    padding: 0.875rem 0;
+    border-bottom: 1px solid rgba(var(--color-border), 0.55);
+  }
+
+  .example-entry:first-child {
+    padding-top: 0;
+  }
+
+  .example-name {
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .example-meta {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.75;
+  }
+
+  .page-note {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    opacity: 0.75;
+  }
+</style>
