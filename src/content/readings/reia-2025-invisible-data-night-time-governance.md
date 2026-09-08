@@ -3,6 +3,6 @@ title: "Invisible Data in Night-Time Governance: Addressing Policy Gaps and Buil
 author: "Reia, J."
 year: 2025
 venue: "Data & Policy"
-week: 11
+date: '2026-11-04'
 order: 2
 ---

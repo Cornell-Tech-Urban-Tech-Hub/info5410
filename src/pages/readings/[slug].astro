@@ -27,7 +27,28 @@ interface Props {
 
 const { reading } = Astro.props;
 
-const { title, author, venue, year, week, note, url } = reading.data;
+const { title, author, venue, year, date, note, url } = reading.data;
+
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+/** "September 16", matching the session headings on the readings index. */
+const sessionLabel = (iso: string) => {
+  const [, month, day] = iso.split('-').map(Number);
+  return `${MONTHS[month - 1]} ${day}`;
+};
 const text = reading.body ?? '';
 
 // The JSON island carries the text to the client. Escape "<" so no
@@ -51,7 +72,7 @@ const metaParts = [author, venue, year ? String(year) : null].filter(Boolean);
         metaParts.length > 0 && (
           <p class='reader-meta'>
             {metaParts.join(' · ')}
-            {week ? ` · Week ${week}` : ''}
+            {date ? ` · ${sessionLabel(date)}` : ''}
           </p>
         )
       }

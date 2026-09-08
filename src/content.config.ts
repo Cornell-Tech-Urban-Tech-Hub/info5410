@@ -65,8 +65,9 @@ const readings = defineCollection({
     author: z.string().optional(),
     year: z.number().optional(),
     venue: z.string().optional(),
-    /** Syllabus week the reading is assigned to. */
-    week: z.number().optional(),
+    /** ISO date of the class session the reading is assigned to. Quoted
+     * in the frontmatter so it stays a string, not a parsed timestamp. */
+    date: z.string().optional(),
     /** Short note, e.g. chapters or pages to read. */
     note: z.string().optional(),
     order: z.number().optional(),

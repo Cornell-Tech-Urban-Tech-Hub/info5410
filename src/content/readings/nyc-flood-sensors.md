@@ -2,7 +2,7 @@
 title: "New York City's Flood Sensors Inspire Global Networks to Monitor Street-Level Flooding"
 author: "NYU Tandon School of Engineering"
 venue: "NYU Engineering News"
-week: 6
+date: '2026-09-30'
 order: 1
 url: "https://engineering.nyu.edu/news/new-york-citys-flood-sensors-inspire-global-networks-monitor-street-level-flooding"
 ---

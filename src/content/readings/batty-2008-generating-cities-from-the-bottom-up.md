@@ -3,7 +3,7 @@ title: "Generating Cities from the Bottom Up"
 author: "Batty, M."
 year: 2008
 venue: "Cluster Magazine"
-week: 1
+date: '2026-08-24'
 order: 2
 files:
   - label: "PDF"

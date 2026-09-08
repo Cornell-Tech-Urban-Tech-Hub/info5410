@@ -1,7 +1,7 @@
 ---
 title: "Intelligent Transportation Systems for Sustainable Smart Cities"
 author: "Elassy et al."
-week: 5
+date: '2026-09-23'
 order: 2
 files:
   - label: "PDF"

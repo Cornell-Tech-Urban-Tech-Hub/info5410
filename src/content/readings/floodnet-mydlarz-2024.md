@@ -3,8 +3,8 @@ title: "FloodNet: Low-cost ultrasonic sensors for real-time measurement of hyper
 author: "Mydlarz, C., et al."
 year: 2024
 venue: "Water Resources Research, 60, e2023WR036806"
-week: 6
+date: '2026-09-30'
 order: 2
-note: "Re-read in week 13"
+note: "Re-read on November 18"
 url: "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2023WR036806"
 ---

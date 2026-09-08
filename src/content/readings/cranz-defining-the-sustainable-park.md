@@ -1,7 +1,7 @@
 ---
 title: "Defining the Sustainable Park: A Fifth Model for Urban Parks"
 author: "Cranz"
-week: 12
+date: '2026-11-11'
 order: 1
 files:
   - label: "PDF"

@@ -1,7 +1,7 @@
 ---
 title: "Defining Public Open Spaces: An Investigation Framework to Inform Planning and Design Decision-Making Processes"
 author: "Pattacini"
-week: 12
+date: '2026-11-11'
 order: 2
 files:
   - label: "PDF"

@@ -1,7 +1,7 @@
 ---
 /**
  * Readings index. Lists every reading in the collection, grouped by
- * syllabus week. Readings with an OCR-ed text store link to the
+ * class date. Readings with an OCR-ed text store link to the
  * on-site reader. See wiki/readings.md.
  */
 import Default from '@layouts/Default.astro';
@@ -11,12 +11,34 @@ import { withBase } from '@lib/base';
 import { getCollection } from 'astro:content';
 
 const readings = (await getCollection('readings')).sort((a, b) => {
-  const weekDiff = (a.data.week ?? 99) - (b.data.week ?? 99);
-  if (weekDiff !== 0) return weekDiff;
+  const dateDiff = (a.data.date ?? '9999').localeCompare(b.data.date ?? '9999');
+  if (dateDiff !== 0) return dateDiff;
   return (a.data.order ?? 0) - (b.data.order ?? 0);
 });
 
-const weeks = [...new Set(readings.map((reading) => reading.data.week))];
+const dates = [...new Set(readings.map((reading) => reading.data.date))];
+
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+/** "September 16". Splits the ISO string rather than building a Date,
+ * which would shift the day west of UTC. */
+const sessionLabel = (iso: string) => {
+  const [, month, day] = iso.split('-').map(Number);
+  return `${MONTHS[month - 1]} ${day}`;
+};
 
 const hasText = (body: string | undefined) =>
   body !== undefined && body.trim().length > 0;
@@ -30,20 +52,20 @@ const hasText = (body: string | undefined) =>
     <section class='home-section max-w-3xl pt-12'>
       <SectionHeading id='readings-heading'>Readings</SectionHeading>
       <p class='page-copy'>
-        Readings for the semester, by syllabus week. Each entry links to the
+        Readings for the semester, by class date. Each entry links to the
         source material. Readings with an on-site text store open in the
         built-in reader.
       </p>
 
       {
-        weeks.map((week) => (
-          <section class='week-group'>
-            <h2 class='week-heading'>
-              {week ? `Week ${week}` : 'Unassigned'}
+        dates.map((date) => (
+          <section class='session-group'>
+            <h2 class='session-heading'>
+              {date ? sessionLabel(date) : 'Unscheduled'}
             </h2>
             <ul class='reading-list'>
               {readings
-                .filter((reading) => reading.data.week === week)
+                .filter((reading) => reading.data.date === date)
                 .map((reading) => {
                   const files = reading.data.files ?? [];
                   const titleHref = files.length
@@ -112,11 +134,11 @@ const hasText = (body: string | undefined) =>
     opacity: 0.8;
   }
 
-  .week-group {
+  .session-group {
     margin-top: 2rem;
   }
 
-  .week-heading {
+  .session-heading {
     font-size: 1.125rem;
     margin-bottom: 0.75rem;
   }
