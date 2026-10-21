@@ -70,6 +70,9 @@ const readings = defineCollection({
     date: z.string().optional(),
     /** Short note, e.g. chapters or pages to read. */
     note: z.string().optional(),
+    /** Optional further reading for the session, listed after the
+     * assigned readings under its own label. */
+    recommended: z.boolean().optional(),
     order: z.number().optional(),
   }),
 });

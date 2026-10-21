@@ -63,60 +63,73 @@ const hasText = (body: string | undefined) =>
             <h2 class='session-heading'>
               {date ? sessionLabel(date) : 'Unscheduled'}
             </h2>
-            <ul class='reading-list'>
-              {readings
-                .filter((reading) => reading.data.date === date)
-                .map((reading) => {
-                  const files = reading.data.files ?? [];
-                  const titleHref = files.length
-                    ? withBase(files[0].path)
-                    : reading.data.url;
-                  return (
-                    <li class='reading-entry'>
-                      <p class='reading-title'>
-                        {titleHref ? (
-                          <DashedLink href={titleHref} external>
-                            {reading.data.title}
-                          </DashedLink>
-                        ) : (
-                          reading.data.title
-                        )}
-                      </p>
-                      <p class='reading-meta'>
-                        {[
-                          reading.data.author,
-                          reading.data.venue,
-                          reading.data.year ? String(reading.data.year) : null,
-                        ]
-                          .filter(Boolean)
-                          .join(' · ')}
-                      </p>
-                      {reading.data.note && (
-                        <p class='reading-note'>{reading.data.note}</p>
-                      )}
-                      {files.length > 1 && (
-                        <p class='reading-files'>
-                          {files.map((file, i) => (
-                            <>
-                              {i > 0 && <span class='file-sep'> · </span>}
-                              <DashedLink href={withBase(file.path)} external>
-                                {file.label}
+            {[false, true].map((recommended) => {
+              const group = readings.filter(
+                (reading) =>
+                  reading.data.date === date &&
+                  Boolean(reading.data.recommended) === recommended
+              );
+              if (!group.length) return null;
+              return (
+                <>
+                  {recommended && (
+                    <h3 class='recommended-heading'>Additional recommended reading</h3>
+                  )}
+                  <ul class='reading-list'>
+                    {group.map((reading) => {
+                      const files = reading.data.files ?? [];
+                      const titleHref = files.length
+                        ? withBase(files[0].path)
+                        : reading.data.url;
+                      return (
+                        <li class='reading-entry'>
+                          <p class='reading-title'>
+                            {titleHref ? (
+                              <DashedLink href={titleHref} external>
+                                {reading.data.title}
                               </DashedLink>
-                            </>
-                          ))}
-                        </p>
-                      )}
-                      {hasText(reading.body) && (
-                        <p class='reading-onsite'>
-                          <DashedLink href={withBase(`readings/${reading.id}/`)}>
-                            Read on site
-                          </DashedLink>
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
-            </ul>
+                            ) : (
+                              reading.data.title
+                            )}
+                          </p>
+                          <p class='reading-meta'>
+                            {[
+                              reading.data.author,
+                              reading.data.venue,
+                              reading.data.year ? String(reading.data.year) : null,
+                            ]
+                              .filter(Boolean)
+                              .join(' · ')}
+                          </p>
+                          {reading.data.note && (
+                            <p class='reading-note'>{reading.data.note}</p>
+                          )}
+                          {files.length > 1 && (
+                            <p class='reading-files'>
+                              {files.map((file, i) => (
+                                <>
+                                  {i > 0 && <span class='file-sep'> · </span>}
+                                  <DashedLink href={withBase(file.path)} external>
+                                    {file.label}
+                                  </DashedLink>
+                                </>
+                              ))}
+                            </p>
+                          )}
+                          {hasText(reading.body) && (
+                            <p class='reading-onsite'>
+                              <DashedLink href={withBase(`readings/${reading.id}/`)}>
+                                Read on site
+                              </DashedLink>
+                            </p>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </>
+              );
+            })}
           </section>
         ))
       }
@@ -141,6 +154,14 @@ const hasText = (body: string | undefined) =>
   .session-heading {
     font-size: 1.125rem;
     margin-bottom: 0.75rem;
+  }
+
+  .recommended-heading {
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    opacity: 0.75;
   }
 
   .reading-list {
